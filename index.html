@@ -1,911 +1,1118 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>研修コース一覧</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Syne:wght@700;800&display=swap');
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>研修コース一覧</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Syne:wght@700;800&display=swap');
 
-  :root {
-    --bg: #0d0f1a;
-    --surface: #161926;
-    --surface2: #1e2235;
-    --border: #2a2f4a;
-    --accent1: #4f8cff;
-    --accent2: #a78bfa;
-    --accent3: #34d399;
-    --accent4: #fb923c;
-    --accent5: #f472b6;
-    --accent6: #facc15;
-    --text: #e2e8f0;
-    --text-muted: #7c8db5;
-    --radius: 12px;
-  }
+    :root {
+      --bg: #0d0f1a;
+      --surface: #161926;
+      --surface2: #1e2235;
+      --border: #2a2f4a;
+      --accent1: #4f8cff;
+      --accent2: #a78bfa;
+      --accent3: #34d399;
+      --accent4: #fb923c;
+      --accent5: #f472b6;
+      --accent6: #facc15;
+      --text: #e2e8f0;
+      --text-muted: #7c8db5;
+      --radius: 12px;
+    }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  body {
-    font-family: 'Noto Sans JP', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-  }
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
 
-  /* ===== HEADER ===== */
-  header {
-    background: linear-gradient(135deg, #0d0f1a 0%, #1a1040 50%, #0d0f1a 100%);
-    border-bottom: 1px solid var(--border);
-    padding: 48px 40px 40px;
-    position: relative;
-    overflow: hidden;
-  }
-  header::before {
-    content: '';
-    position: absolute;
-    top: -80px; right: -80px;
-    width: 360px; height: 360px;
-    background: radial-gradient(circle, rgba(79,140,255,0.15) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  header::after {
-    content: '';
-    position: absolute;
-    bottom: -60px; left: 20%;
-    width: 280px; height: 280px;
-    background: radial-gradient(circle, rgba(167,139,250,0.10) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .header-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
-  .header-label {
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent1);
-    font-weight: 500;
-    margin-bottom: 10px;
-  }
-  header h1 {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(28px, 4vw, 46px);
-    font-weight: 800;
-    line-height: 1.15;
-    background: linear-gradient(90deg, #fff 0%, #a78bfa 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 12px;
-  }
-  header p {
-    color: var(--text-muted);
-    font-size: 15px;
-    max-width: 560px;
-    line-height: 1.7;
-  }
-  .stats-row {
-    display: flex; gap: 32px; margin-top: 28px; flex-wrap: wrap;
-  }
-  .stat {
-    display: flex; flex-direction: column; gap: 2px;
-  }
-  .stat-num { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 700; color: var(--accent1); }
-  .stat-label { font-size: 12px; color: var(--text-muted); }
+    /* ===== HEADER ===== */
+    header {
+      background: linear-gradient(135deg, #0d0f1a 0%, #1a1040 50%, #0d0f1a 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 48px 40px 40px;
+      position: relative;
+      overflow: hidden;
+    }
 
-  /* ===== SEARCH ===== */
-  .search-wrap {
-    max-width: 1200px; margin: 32px auto 0; padding: 0 40px;
-  }
-  .search-box {
-    display: flex; gap: 10px; align-items: center;
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 10px; padding: 10px 16px;
-    max-width: 480px;
-  }
-  .search-box input {
-    background: none; border: none; outline: none;
-    color: var(--text); font-size: 14px; flex: 1;
-    font-family: 'Noto Sans JP', sans-serif;
-  }
-  .search-box input::placeholder { color: var(--text-muted); }
-  .search-icon { color: var(--text-muted); font-size: 16px; }
+    header::before {
+      content: '';
+      position: absolute;
+      top: -80px;
+      right: -80px;
+      width: 360px;
+      height: 360px;
+      background: radial-gradient(circle, rgba(79, 140, 255, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
 
-  /* ===== MAIN ===== */
-  main {
-    max-width: 1200px; margin: 0 auto; padding: 36px 40px 80px;
-  }
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: -60px;
+      left: 20%;
+      width: 280px;
+      height: 280px;
+      background: radial-gradient(circle, rgba(167, 139, 250, 0.10) 0%, transparent 70%);
+      pointer-events: none;
+    }
 
-  /* ===== CATEGORY TABS ===== */
-  .cat-tabs {
-    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 36px;
-  }
-  .cat-tab {
-    padding: 8px 16px;
-    border-radius: 100px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text-muted);
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: 'Noto Sans JP', sans-serif;
-    white-space: nowrap;
-  }
-  .cat-tab:hover, .cat-tab.active {
-    background: var(--accent1);
-    border-color: var(--accent1);
-    color: #fff;
-  }
-  .cat-tab[data-cat="1"].active { background: var(--accent1); border-color: var(--accent1); }
-  .cat-tab[data-cat="2"].active { background: var(--accent3); border-color: var(--accent3); }
-  .cat-tab[data-cat="3"].active { background: var(--accent2); border-color: var(--accent2); }
-  .cat-tab[data-cat="4"].active { background: var(--accent5); border-color: var(--accent5); }
-  .cat-tab[data-cat="5"].active { background: var(--accent6); border-color: var(--accent6); color: #111; }
-  .cat-tab[data-cat="6"].active { background: var(--accent4); border-color: var(--accent4); }
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
 
-  /* ===== CATEGORY SECTION ===== */
-  .category-section {
-    margin-bottom: 56px;
-    animation: fadeUp 0.4s ease forwards;
-  }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .cat-header {
-    display: flex; align-items: center; gap: 14px; margin-bottom: 24px;
-    padding-bottom: 14px; border-bottom: 1px solid var(--border);
-  }
-  .cat-icon {
-    width: 44px; height: 44px; border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px; flex-shrink: 0;
-  }
-  .cat-title { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; color: #fff; }
-  .cat-count {
-    margin-left: auto;
-    font-size: 12px; color: var(--text-muted);
-    background: var(--surface2); border-radius: 100px; padding: 3px 10px;
-  }
+    .header-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent1);
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
 
-  /* ===== SUB CATEGORY ===== */
-  .sub-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px;
-  }
-  .sub-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); overflow: hidden;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  .sub-card:hover {
-    border-color: var(--accent1);
-    box-shadow: 0 0 0 1px var(--accent1)22;
-  }
-  .sub-card-header {
-    padding: 14px 16px 10px;
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: 8px;
-    cursor: pointer; user-select: none;
-  }
-  .sub-badge {
-    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
-  }
-  .sub-title { font-size: 13px; font-weight: 700; flex: 1; }
-  .sub-toggle {
-    color: var(--text-muted); font-size: 12px; transition: transform 0.3s;
-  }
-  .sub-card.open .sub-toggle { transform: rotate(180deg); }
-  .sub-count-badge {
-    background: var(--surface2); border-radius: 100px;
-    padding: 2px 8px; font-size: 11px; color: var(--text-muted);
-  }
+    header h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(28px, 4vw, 46px);
+      font-weight: 800;
+      line-height: 1.15;
+      background: linear-gradient(90deg, #fff 0%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
 
-  .course-list {
-    padding: 0; max-height: 0; overflow: hidden;
-    transition: max-height 0.4s ease, padding 0.3s;
-  }
-  .sub-card.open .course-list {
-    max-height: 1000px; padding: 8px 0;
-  }
-  .course-item {
-    display: flex; align-items: flex-start; gap: 10px;
-    padding: 8px 16px;
-    border-bottom: 1px solid var(--border);
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-  .course-item:last-child { border-bottom: none; }
-  .course-item:hover { background: var(--surface2); }
-  .course-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--border); margin-top: 7px; flex-shrink: 0; }
-  .course-name { font-size: 13px; line-height: 1.5; color: var(--text); }
-  .course-item:hover .course-name { color: #fff; }
+    header p {
+      color: var(--text-muted);
+      font-size: 15px;
+      max-width: 560px;
+      line-height: 1.7;
+    }
 
-  /* highlight */
-  .highlight { background: rgba(167,139,250,0.3); border-radius: 2px; }
+    .stats-row {
+      display: flex;
+      gap: 32px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
 
-  /* no-results */
-  .no-results {
-    text-align: center; padding: 60px 20px;
-    color: var(--text-muted); font-size: 15px; display: none;
-  }
+    .stat {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
 
-  @media (max-width: 700px) {
-    header { padding: 32px 20px 28px; }
-    .search-wrap, main { padding-left: 20px; padding-right: 20px; }
-    .sub-grid { grid-template-columns: 1fr; }
-  }
-</style>
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--accent1);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* ===== SEARCH ===== */
+    .search-wrap {
+      max-width: 1200px;
+      margin: 32px auto 0;
+      padding: 0 40px;
+    }
+
+    .search-box {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 16px;
+      max-width: 480px;
+    }
+
+    .search-box input {
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--text);
+      font-size: 14px;
+      flex: 1;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+
+    .search-box input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .search-icon {
+      color: var(--text-muted);
+      font-size: 16px;
+    }
+
+    /* ===== MAIN ===== */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 36px 40px 80px;
+    }
+
+    /* ===== CATEGORY TABS ===== */
+    .cat-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .cat-tab {
+      padding: 8px 16px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Noto Sans JP', sans-serif;
+      white-space: nowrap;
+    }
+
+    .cat-tab:hover,
+    .cat-tab.active {
+      background: var(--accent1);
+      border-color: var(--accent1);
+      color: #fff;
+    }
+
+    .cat-tab[data-cat="1"].active {
+      background: var(--accent1);
+      border-color: var(--accent1);
+    }
+
+    .cat-tab[data-cat="2"].active {
+      background: var(--accent3);
+      border-color: var(--accent3);
+    }
+
+    .cat-tab[data-cat="3"].active {
+      background: var(--accent2);
+      border-color: var(--accent2);
+    }
+
+    .cat-tab[data-cat="4"].active {
+      background: var(--accent5);
+      border-color: var(--accent5);
+    }
+
+    .cat-tab[data-cat="5"].active {
+      background: var(--accent6);
+      border-color: var(--accent6);
+      color: #111;
+    }
+
+    .cat-tab[data-cat="6"].active {
+      background: var(--accent4);
+      border-color: var(--accent4);
+    }
+
+    /* ===== CATEGORY SECTION ===== */
+    .category-section {
+      margin-bottom: 56px;
+      animation: fadeUp 0.4s ease forwards;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .cat-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cat-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .cat-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .cat-count {
+      margin-left: auto;
+      font-size: 12px;
+      color: var(--text-muted);
+      background: var(--surface2);
+      border-radius: 100px;
+      padding: 3px 10px;
+    }
+
+    /* ===== SUB CATEGORY ===== */
+    .sub-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 16px;
+    }
+
+    .sub-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .sub-card:hover {
+      border-color: var(--accent1);
+      box-shadow: 0 0 0 1px var(--accent1)22;
+    }
+
+    .sub-card-header {
+      padding: 14px 16px 10px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .sub-badge {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .sub-title {
+      font-size: 13px;
+      font-weight: 700;
+      flex: 1;
+    }
+
+    .sub-toggle {
+      color: var(--text-muted);
+      font-size: 12px;
+      transition: transform 0.3s;
+    }
+
+    .sub-card.open .sub-toggle {
+      transform: rotate(180deg);
+    }
+
+    .sub-count-badge {
+      background: var(--surface2);
+      border-radius: 100px;
+      padding: 2px 8px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .course-list {
+      padding: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s;
+    }
+
+    .sub-card.open .course-list {
+      max-height: 1000px;
+      padding: 8px 0;
+    }
+
+    .course-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 16px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .course-item:last-child {
+      border-bottom: none;
+    }
+
+    .course-item:hover {
+      background: var(--surface2);
+    }
+
+    .course-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--border);
+      margin-top: 7px;
+      flex-shrink: 0;
+    }
+
+    .course-name {
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--text);
+    }
+
+    .course-item:hover .course-name {
+      color: #fff;
+    }
+
+    /* highlight */
+    .highlight {
+      background: rgba(167, 139, 250, 0.3);
+      border-radius: 2px;
+    }
+
+    /* no-results */
+    .no-results {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+      font-size: 15px;
+      display: none;
+    }
+
+    @media (max-width: 700px) {
+      header {
+        padding: 32px 20px 28px;
+      }
+
+      .search-wrap,
+      main {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .sub-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<header>
-  <div class="header-inner">
-    <div class="header-label">Training Catalog</div>
-    <h1>研修コース一覧</h1>
-    <p>目的やスキルレベルに合わせて研修を探せます。大カテゴリ・中カテゴリで分類し、一覧性よく表示しています。</p>
-    <div class="stats-row">
-      <div class="stat"><span class="stat-num" id="total-count">0</span><span class="stat-label">コース総数</span></div>
-      <div class="stat"><span class="stat-num">6</span><span class="stat-label">大カテゴリ</span></div>
+  <header>
+    <div class="header-inner">
+      <div class="header-label">Training Catalog</div>
+      <h1>研修コース一覧</h1>
+      <p>目的やスキルレベルに合わせて研修を探せます。大カテゴリ・中カテゴリで分類し、一覧性よく表示しています。</p>
+      <div class="stats-row">
+        <div class="stat"><span class="stat-num" id="total-count">0</span><span class="stat-label">コース総数</span></div>
+        <div class="stat"><span class="stat-num">6</span><span class="stat-label">大カテゴリ</span></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="search-wrap">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search-input" placeholder="コース名・キーワードで検索…">
     </div>
   </div>
-</header>
 
-<div class="search-wrap">
-  <div class="search-box">
-    <span class="search-icon">🔍</span>
-    <input type="text" id="search-input" placeholder="コース名・キーワードで検索…">
-  </div>
-</div>
+  <main>
+    <div class="cat-tabs" id="cat-tabs">
+      <button class="cat-tab active" data-cat="all">すべて</button>
+      <button class="cat-tab" data-cat="1">プログラミング開発</button>
+      <button class="cat-tab" data-cat="2">クラウド・インフラ</button>
+      <button class="cat-tab" data-cat="3">システム設計・品質</button>
+      <button class="cat-tab" data-cat="4">データ・AI</button>
+      <button class="cat-tab" data-cat="5">ビジネスアプリ・ローコード</button>
+      <button class="cat-tab" data-cat="6">PM・ビジネススキル</button>
+    </div>
 
-<main>
-  <div class="cat-tabs" id="cat-tabs">
-    <button class="cat-tab active" data-cat="all">すべて</button>
-    <button class="cat-tab" data-cat="1">プログラミング開発</button>
-    <button class="cat-tab" data-cat="2">クラウド・インフラ</button>
-    <button class="cat-tab" data-cat="3">システム設計・品質</button>
-    <button class="cat-tab" data-cat="4">データ・AI</button>
-    <button class="cat-tab" data-cat="5">ビジネスアプリ・ローコード</button>
-    <button class="cat-tab" data-cat="6">PM・ビジネススキル</button>
-  </div>
+    <div id="catalog"></div>
+    <div class="no-results" id="no-results">該当するコースが見つかりませんでした。</div>
+  </main>
 
-  <div id="catalog"></div>
-  <div class="no-results" id="no-results">該当するコースが見つかりませんでした。</div>
-</main>
+  <script>
+    const CATALOG = [
+      {
+        id: 1,
+        title: "新人研修",
+        icon: "💻",
+        color: "#4f8cff",
+        subs: [
+          {
+            title: "オープン新人",
+            courses: [
+              "オープン新人研修",
+            ]
+          },
+        ]
+      },
+      {
+        id: 1,
+        title: "プログラミング開発",
+        icon: "💻",
+        color: "#4f8cff",
+        subs: [
+          {
+            title: "Java",
+            courses: [
+              "Javaプログラミング入門 -Java 25対応で初心者にやさしい-",
+              "Javaプログラミング基礎 -開発現場を見据えた次のステップ-",
+              "Javaプログラミング作法 -Effective Javaで知るプログラミングの定石-",
+              "JUnitによるテスト入門",
+              "Spring Boot 4 ではじめる Webアプリケーション開発入門",
+              "Spring Boot 4 ではじめる Webサービス開発入門 REST編",
+              "Spring Securityではじめる認証・認可入門",
+              "＜速習＞Spring Boot 3 へのマイグレーション",
+              "Spring Boot 4 ではじめる Webサービス開発 GraphQL編",
+              "Spring Boot テスト 入門",
+              "Keycloakを活用した分散アプリ開発 -OAuth/OpenID Connectを用いた認証・認可の実装-",
+              "Spring Inside・DIコンテナ -ソースコードから読み解くDIコンテナ詳細-",
+              "Spring Inside・Spring Web MVC -ソースコードから読み解くSpring Web MVC詳細-",
+            ]
+          },
+          {
+            title: "Spring",
+            courses: [
+              "Javaプログラミング入門 -Java 25対応で初心者にやさしい-",
+              "Javaプログラミング基礎 -開発現場を見据えた次のステップ-",
+              "Javaプログラミング作法 -Effective Javaで知るプログラミングの定石-",
+              "JUnitによるテスト入門",
+              "Spring Boot 4 ではじめる Webアプリケーション開発入門",
+              "Spring Boot 4 ではじめる Webサービス開発入門 REST編",
+              "Spring Securityではじめる認証・認可入門",
+              "＜速習＞Spring Boot 3 へのマイグレーション",
+              "Spring Boot 4 ではじめる Webサービス開発 GraphQL編",
+              "Spring Boot テスト 入門",
+              "Keycloakを活用した分散アプリ開発 -OAuth/OpenID Connectを用いた認証・認可の実装-",
+              "Spring Inside・DIコンテナ -ソースコードから読み解くDIコンテナ詳細-",
+              "Spring Inside・Spring Web MVC -ソースコードから読み解くSpring Web MVC詳細-",
+            ]
+          },
+          {
+            title: "フロントエンド（HTML/CSS/JS/TS）",
+            courses: [
+              "HTML/CSS入門 -HTML Living Standard対応-",
+              "JavaScriptで学ぶ初めてのプログラミング",
+              "モダンJavaScript入門",
+              "JavaScript応用 -ブラウザAPIの活用-",
+              "TypeScript入門 -JavaScript応用-",
+              "jQueryによるAjaxアプリケーション開発",
+              "Node.js入門 -Expressを使ったREST Web API開発-",
+            ]
+          },
+          {
+            title: "フロントエンドフレームワーク（React / Vue / Angular / 他）",
+            courses: [
+              "【AIアシスト対応】Vue.js入門 -ver.3対応-",
+              "NuxtによるSPA開発ワークショップ -TypeScript・Vue.js応用-",
+              "【AIアシスト対応】Angular入門",
+              "【AIアシスト対応】React入門 -Hooks、ContextAPI、MUI対応-",
+              "Reduxワークショップ -React応用-",
+              "Next.js入門 -App Router、Server Actions、Prisma、TypeScript・React応用-",
+              "SvelteKit入門 -TypeScript-",
+              "JavaScriptテスト入門 -Vitest, TypeScript, React応用-",
+              "1日で学ぶReact -基礎と非同期処理、つまずきポイントの攻略-",
+            ]
+          },
+          {
+            title: "モバイルアプリ開発（Android / iOS / Flutter）",
+            courses: [
+              "【AIアシスト対応】JavaによるAndroidアプリ開発入門",
+              "【AIアシスト対応】JavaによるAndroidアプリ開発応用 -RecyclerView、ViewModel、LiveData、データバインディング、Retrofit-",
+              "【AIアシスト対応】KotlinによるAndroidアプリ開発入門 -Jetpack Compose-",
+              "【AIアシスト対応】KotlinによるAndroidアプリ開発応用 -ViewModel、Flow、RetrofitとCoroutines、Hilt-",
+              "【AIアシスト対応】SwiftによるiOSアプリ開発入門 -Swiftの基本文法とSwiftUIを利用したアプリ開発の基礎-",
+              "【AIアシスト対応】SwiftによるiOSアプリ開発応用 -Web API, DBアクセスとライブラリの活用-",
+              "Flutterアプリ開発入門 -クロスプラットフォームアプリを開発しよう-",
+              "Flutterアプリ開発応用",
+              "GeminiでAndroidアプリ高速開発体験",
+            ]
+          },
+          {
+            title: "PHP・Python・その他言語",
+            courses: [
+              "PHPで学ぶはじめてのWebアプリケーション",
+              "PHP基礎",
+              "Laravel入門",
+              "Python+Web",
+              "Python 3 エンジニア認定基礎試験対策〜目指せ! Python 認定エンジニア〜",
+              "Django基礎1〜Python でウェブサイトをさくさく作ろう〜",
+              "Django基礎2〜Django を活用してウェブサイトを作りましょう〜",
+              "AIと共に作るWebアプリケーション",
+              "ビジネス活用のためのデータベース入門 -SQLあるいは生成AIを利用してのデータ抽出と集計-",
+              "IoT・AI入門【Raspberry Piとセンサーで作ろう】",
+              "IoT・クラウド・AI実践【RaspberryPiでホームアシスタントを作る】",
+            ]
+          },
+        ]
+      },
+      {
+        id: 2,
+        title: "クラウド",
+        icon: "☁️",
+        color: "#34d399",
+        subs: [
+          {
+            title: "AWS",
+            courses: [
+              "アプリケーションエンジニアのためのAWS入門 -EC2,S3,VPC,CDK-",
+              "サーバーレスアプリケーション開発 -Lambda、API Gateway、Cognito-",
+              "Architecting on AWS（試験バウチャー無）",
+              "Architecting on AWS（試験バウチャー付）",
+              "Advanced Architecting on AWS（試験バウチャーなし）",
+              "Advanced Architecting on AWS（試験バウチャー付）",
+              "Cloud Operations on AWS (Systems Operations on AWS より改称)（試験バウチャーなし）",
+              "Cloud Operations on AWS (Systems Operations on AWS より改称)（試験バウチャー付）",
+              "AWS Security Essentials",
+              "AWS Cloud Practitioner Essentials(v3)（試験バウチャーなし）",
+              "AWS Cloud Practitioner Essentials(v3)（試験バウチャー付）",
+              "AWS Technical Essentials(v5)",
+              "Running Containers on Amazon Elastic Kubernetes Service (Amazon EKS)",
+              "DevOps Engineering on AWS（試験バウチャーなし）",
+              "DevOps Engineering on AWS（試験バウチャー付）",
+              "Generative AI Essentials on AWS（バウチャーなし）",
+              "Generative AI Essentials on AWS（バウチャー付）",
+              "Generative AI for Executives",
+              "1日で学ぶGoogle Cloud入門 -Cloud SQL+スプレッドシートで手間なくクラウドDXを実現しませんか?-",
+            ]
+          },
+          {
+            title: "Microsoft Azure",
+            courses: [
+              "AZ-900 Microsoft Azure 基礎（試験バウチャーなし）〜【CTCTオリジナル演習付き】「試験 AZ-900:Microsoft Azure Fundamentals」対応コース〜",
+              "AZ-900 Microsoft Azure 基礎（試験バウチャー付）〜【CTCTオリジナル演習付き】「試験 AZ-900:Microsoft Azure Fundamentals」対応コース〜",
+              "AZ-104 Microsoft Azure 管理者（試験バウチャーなし）",
+              "AZ-104 Microsoft Azure 管理者（試験バウチャー付）",
+              "AZ-305 Microsoft Azure インフラストラクチャの設計（試験バウチャーなし）",
+              "AZ-305 Microsoft Azure インフラストラクチャの設計（試験バウチャー付）",
+              "Azure Infrastructure 設計のポイント 【机上設計演習付き】Azure(IaaS)設計を学ぶ",
+              "Microsoft AzureによるITインフラの拡張 ～基本から学ぶサーバー構築(Windows/Linux両対応)～",
+              "Microsoft Azureによるサイト間ネットワークの構築 ～ハイブリッドクラウド構成の基礎～",
+              "速習 Hyper-V ＆ SCVMM〜Hyper-V 仮想化基盤を SCVMM で一元管理する〜",
+            ]
+          },
+          {
+            title: "Google Cloud",
+            courses: [
+              "Google Cloud Fundamentals: Core Infrastructure",
+              "Architecting with Google Cloud: Design and Process",
+            ]
+          },
+          {
+            title: "クラウド基礎・仮想化",
+            courses: [
+              "クラウド入門―導入事例で学ぶクラウド活用の第一歩―",
+              "全体像から理解するクラウドネイティブ基礎 -VM⇔コンテナ、クラウドサービスの利用、プロセスの自動化-",
+              "クラウドコンピューティングの基礎＜含EXIN認定試験＞",
+              "仮想化基礎",
+              "仮想化応用",
+              "VMware vSphere: Install, Configure, Manage [V8]",
+            ]
+          },
+          {
+            title: "コンテナ・Kubernetes",
+            courses: [
+              "Docker入門 -アプリケーションをコンテナ化しよう-",
+              "アプリケーションエンジニアのためのKubernetes基礎 -クラウドネイティブなアプリケーションの構築と運用-",
+              "レガシーアプリのコンテナ環境への移行 -コンテナ化、データの永続化、Kubernetes Operator-",
+              "＜ソフトバンク監修＞運用までを見据えたコンテナ・Kubernetes入門 -GitOps、サービスメッシュ、Kubernetesエコシステム-",
+              "Kubernetesにおける運用基本操作 -スケーリング、サービスメッシュ、自動復旧、コンテナセキュリティ-",
+              "動的なクラウドネイティブ環境のメトリクス監視入門 -Prometheusを使用した監視/Grafanaを使用した可視化-",
+              "クラウドネイティブ環境におけるログ収集・分析のためのElastic Stack入門",
+            ]
+          },
+          {
+            title: "Linux・ネットワーク・セキュリティ",
+            courses: [
+              "Linux 基本操作 -コマンド操作で学ぶ Linux オペレーティングシステム-",
+              "Linuxシステム管理 ～Linux OS運用業務のHow to～",
+              "Linuxネットワーク管理 ～Linuxのネットワーク管理のHow to～",
+              "LinuxインターネットサーバSimple構築 ～Web/Proxy/DNS/メールサーバを構築するための基礎と応用～",
+              "Linux OSセキュリティ ～Linuxシステムへの攻撃手法と、その防御方法について～",
+              "ネットワークファーストステップ ～ネットワーク入門～",
+              "ネットワーク設計ファーストステップ 〜構成図を書いて学ぶネットワーク設計の入門講座〜",
+              "無線LANシステム構築実践 ～企業向け無線LANシステムの設計・構築・運用～",
+              "無線LANトラブルシュート ～パケット解析による無線LANトラブルの調査～",
+              "実践！セキュリティ（サイバー攻撃手法とその対策） ～ハンズオンで学ぶ各種ハッキング手法～",
+              "実践！セキュリティ（セキュリティ運用/インシデント検知）",
+              "実践！セキュリティ（インシデント対応/フォレンジック調査）",
+              "システムトラブルシュート（ファーストステップ） ～問題解決のポイントとインフラ（ネットワーク/サーバ）の基礎実践～",
+              "システムトラブルシュート（ネクストステップ）〜問題解決のポイントとインフラ（サーバOS／ネットワーク／ストレージ／仮想化／ファイアウォール／ロードバランサ）の基礎実践！！〜",
+              "システム運用業務講座（ファーストステップ）〜インシデント管理を中心とした運用業務の注意すべきポイント〜",
+              "PythonによるAIテキスト解析",
+              "Pythonによるネットワーク運用自動化入門 ～Pythonスクリプトを活用したネットワーク機器の運用自動化－入門編～",
+              "Pythonによるネットワーク運用コンフィグ編 ～Pythonを使用した設定ファイル作成や出力結果の操作～",
+            ]
+          },
+          {
+            title: "DevOps・CI/CD・IaC",
+            courses: [
+              "基礎から学ぶGitコマンド -しっかり身に付くバージョン管理-",
+              "Git速習",
+              "GitLab CIパイプライン",
+              "マネージドサービスで始めるCI/CD -パイプラインによる開発・運用プロセス自動化-",
+              "Terraform、Ansible を使ったインフラストラクチャアズコード入門 -マルチクラウド実現に向けて-",
+              "Docker AIを活用したAIエージェント開発 -ローカルLLM/MCPによるAIエージェントの構築-",
+            ]
+          },
+        ]
+      },
+      {
+        id: 2,
+        title: "インフラ",
+        icon: "☁️",
+        color: "#34d399",
+        subs: [
+          {
+            title: "AWS",
+            courses: [
+              "アプリケーションエンジニアのためのAWS入門 -EC2,S3,VPC,CDK-",
+              "サーバーレスアプリケーション開発 -Lambda、API Gateway、Cognito-",
+              "Architecting on AWS（試験バウチャー無）",
+              "Architecting on AWS（試験バウチャー付）",
+              "Advanced Architecting on AWS（試験バウチャーなし）",
+              "Advanced Architecting on AWS（試験バウチャー付）",
+              "Cloud Operations on AWS (Systems Operations on AWS より改称)（試験バウチャーなし）",
+              "Cloud Operations on AWS (Systems Operations on AWS より改称)（試験バウチャー付）",
+              "AWS Security Essentials",
+              "AWS Cloud Practitioner Essentials(v3)（試験バウチャーなし）",
+              "AWS Cloud Practitioner Essentials(v3)（試験バウチャー付）",
+              "AWS Technical Essentials(v5)",
+              "Running Containers on Amazon Elastic Kubernetes Service (Amazon EKS)",
+              "DevOps Engineering on AWS（試験バウチャーなし）",
+              "DevOps Engineering on AWS（試験バウチャー付）",
+              "Generative AI Essentials on AWS（バウチャーなし）",
+              "Generative AI Essentials on AWS（バウチャー付）",
+              "Generative AI for Executives",
+              "1日で学ぶGoogle Cloud入門 -Cloud SQL+スプレッドシートで手間なくクラウドDXを実現しませんか?-",
+            ]
+          },
+          {
+            title: "Microsoft Azure",
+            courses: [
+              "AZ-900 Microsoft Azure 基礎（試験バウチャーなし）〜【CTCTオリジナル演習付き】「試験 AZ-900:Microsoft Azure Fundamentals」対応コース〜",
+              "AZ-900 Microsoft Azure 基礎（試験バウチャー付）〜【CTCTオリジナル演習付き】「試験 AZ-900:Microsoft Azure Fundamentals」対応コース〜",
+              "AZ-104 Microsoft Azure 管理者（試験バウチャーなし）",
+              "AZ-104 Microsoft Azure 管理者（試験バウチャー付）",
+              "AZ-305 Microsoft Azure インフラストラクチャの設計（試験バウチャーなし）",
+              "AZ-305 Microsoft Azure インフラストラクチャの設計（試験バウチャー付）",
+              "Azure Infrastructure 設計のポイント 【机上設計演習付き】Azure(IaaS)設計を学ぶ",
+              "Microsoft AzureによるITインフラの拡張 ～基本から学ぶサーバー構築(Windows/Linux両対応)～",
+              "Microsoft Azureによるサイト間ネットワークの構築 ～ハイブリッドクラウド構成の基礎～",
+              "速習 Hyper-V ＆ SCVMM〜Hyper-V 仮想化基盤を SCVMM で一元管理する〜",
+            ]
+          },
+          {
+            title: "Google Cloud",
+            courses: [
+              "Google Cloud Fundamentals: Core Infrastructure",
+              "Architecting with Google Cloud: Design and Process",
+            ]
+          },
+          {
+            title: "クラウド基礎・仮想化",
+            courses: [
+              "クラウド入門―導入事例で学ぶクラウド活用の第一歩―",
+              "全体像から理解するクラウドネイティブ基礎 -VM⇔コンテナ、クラウドサービスの利用、プロセスの自動化-",
+              "クラウドコンピューティングの基礎＜含EXIN認定試験＞",
+              "仮想化基礎",
+              "仮想化応用",
+              "VMware vSphere: Install, Configure, Manage [V8]",
+            ]
+          },
+          {
+            title: "コンテナ・Kubernetes",
+            courses: [
+              "Docker入門 -アプリケーションをコンテナ化しよう-",
+              "アプリケーションエンジニアのためのKubernetes基礎 -クラウドネイティブなアプリケーションの構築と運用-",
+              "レガシーアプリのコンテナ環境への移行 -コンテナ化、データの永続化、Kubernetes Operator-",
+              "＜ソフトバンク監修＞運用までを見据えたコンテナ・Kubernetes入門 -GitOps、サービスメッシュ、Kubernetesエコシステム-",
+              "Kubernetesにおける運用基本操作 -スケーリング、サービスメッシュ、自動復旧、コンテナセキュリティ-",
+              "動的なクラウドネイティブ環境のメトリクス監視入門 -Prometheusを使用した監視/Grafanaを使用した可視化-",
+              "クラウドネイティブ環境におけるログ収集・分析のためのElastic Stack入門",
+            ]
+          },
+          {
+            title: "Linux・ネットワーク・セキュリティ",
+            courses: [
+              "Linux 基本操作 -コマンド操作で学ぶ Linux オペレーティングシステム-",
+              "Linuxシステム管理 ～Linux OS運用業務のHow to～",
+              "Linuxネットワーク管理 ～Linuxのネットワーク管理のHow to～",
+              "LinuxインターネットサーバSimple構築 ～Web/Proxy/DNS/メールサーバを構築するための基礎と応用～",
+              "Linux OSセキュリティ ～Linuxシステムへの攻撃手法と、その防御方法について～",
+              "ネットワークファーストステップ ～ネットワーク入門～",
+              "ネットワーク設計ファーストステップ 〜構成図を書いて学ぶネットワーク設計の入門講座〜",
+              "無線LANシステム構築実践 ～企業向け無線LANシステムの設計・構築・運用～",
+              "無線LANトラブルシュート ～パケット解析による無線LANトラブルの調査～",
+              "実践！セキュリティ（サイバー攻撃手法とその対策） ～ハンズオンで学ぶ各種ハッキング手法～",
+              "実践！セキュリティ（セキュリティ運用/インシデント検知）",
+              "実践！セキュリティ（インシデント対応/フォレンジック調査）",
+              "システムトラブルシュート（ファーストステップ） ～問題解決のポイントとインフラ（ネットワーク/サーバ）の基礎実践～",
+              "システムトラブルシュート（ネクストステップ）〜問題解決のポイントとインフラ（サーバOS／ネットワーク／ストレージ／仮想化／ファイアウォール／ロードバランサ）の基礎実践！！〜",
+              "システム運用業務講座（ファーストステップ）〜インシデント管理を中心とした運用業務の注意すべきポイント〜",
+              "PythonによるAIテキスト解析",
+              "Pythonによるネットワーク運用自動化入門 ～Pythonスクリプトを活用したネットワーク機器の運用自動化－入門編～",
+              "Pythonによるネットワーク運用コンフィグ編 ～Pythonを使用した設定ファイル作成や出力結果の操作～",
+            ]
+          },
+          {
+            title: "DevOps・CI/CD・IaC",
+            courses: [
+              "基礎から学ぶGitコマンド -しっかり身に付くバージョン管理-",
+              "Git速習",
+              "GitLab CIパイプライン",
+              "マネージドサービスで始めるCI/CD -パイプラインによる開発・運用プロセス自動化-",
+              "Terraform、Ansible を使ったインフラストラクチャアズコード入門 -マルチクラウド実現に向けて-",
+              "Docker AIを活用したAIエージェント開発 -ローカルLLM/MCPによるAIエージェントの構築-",
+            ]
+          },
+        ]
+      },
+      {
+        id: 3,
+        title: "システム設計・品質",
+        icon: "🏗️",
+        color: "#a78bfa",
+        subs: [
+          {
+            title: "要件定義・システム設計",
+            courses: [
+              "システム開発工程基礎",
+              "システム開発を成功に導く要件定義スキル強化",
+              "業務設計・システム方式設計―現場で活かせる業務設計とシステム方式設計の基礎から応用まで―",
+              "外部設計―要件を具体化し、顧客視点で業務をシステム化するための基礎から応用まで―",
+              "内部設計―実務で役立つデータ設計・モジュール設計・処理設計の基礎から応用まで―",
+              "【PDU対象】要求定義(前編) ～ユーザ要望からシステム要件を定義する～",
+              "【PDU対象】要求定義(後編) ～システム要件を詳細化し仕様書を作成する～",
+              "【PDU対象】要求引き出しスキル実践ワークショップ ～潜在ニーズを探り、顧客の真のニーズを明確化するために～",
+              "ユーザーインタフェース設計 ~論理思考をデザインに落とし込むまで~",
+              "ユーザーインタフェース設計（講義編） ~論理思考をデザインに落とし込むまで~",
+              "ユーザーインタフェース設計（演習編） ~論理思考をデザインに落とし込むまで~",
+              "分析モデリング基礎",
+              "UMLモデリング入門－UMTP-L1認定",
+              "ベンダーコミュニケーション力強化！IT発注・要件定義の心得",
+              "ベンダーコミュニケーション力強化！システム開発入門",
+            ]
+          },
+          {
+            title: "テスト・品質管理",
+            courses: [
+              "ソフトウェアテスト、基本の「き」　～ゼロから学ぶ品質センス～",
+              "ソフトウェアテスト入門　～「テストに関する知識」、「品質に関する知識」を習得～",
+              "テスト自動化入門　～テストオートメーションの基礎～",
+              "非機能テスト入門（性能・負荷、ユーザビリティ）　～注目度急上昇のテスト領域～",
+              "テスト設計（機能テスト）　～効率的に漏れの無いテスト設計手法を習得～",
+              "テスト設計（シナリオテスト）　～業務フロー等を基に網羅的なテスト設計を習得～",
+              "仕様書インスペクション　～上流品質を高め手戻りを防ぐドキュメントレビュー技法～",
+              "DevOpsテスト入門　～継続的デリバリーを実現するテストのアプローチ～",
+              "テスト計画　～成功するためのテスト方針／工数見積りの極意を伝授～",
+              "テスト管理　～テスト実行時の管理手法／留意するポイント／各種秘訣を伝授～",
+              "不具合分析　～ソフトウェア障害報告や不具合データの分析と対策、今後の改善に活かす方法を伝授～",
+              "テスト戦略　～テスト計画に繋がる具体的な戦略立案の肝～",
+              "コンポーネントテスト【Java編】　～JUnitを使って学ぶ単体テストのツボ～",
+              "テスト観点の作り方　～ゼロから導くテストの切り口～",
+              "マスターテスト計画書の作成・活用実践　～限られた期間／予算のなかでどう品質を確保するか～",
+              "ソフトウェア品質管理基礎―テスト工程・レビュー・品質指標の基礎から応用まで―",
+              "Selenium基礎",
+              "ベンダーコミュニケーション力強化！システムテストと品質管理",
+              "顧客満足度を高める品質管理実践",
+            ]
+          },
+          {
+            title: "アーキテクチャ・マイクロサービス",
+            courses: [
+              "マイクロサービス概要",
+              "マイクロサービスアーキテクチャにおけるトランザクション入門",
+              "モジュラーモノリスから始めるマイクロサービス入門",
+              "速習！モジュラーモノリス入門",
+              "ドメイン駆動設計とAI駆動開発による新しい開発スタイル入門",
+              "AI駆動開発入門 -リスクを理解し、個人・チームの生産性を高めるAI導入ガイド-",
+            ]
+          },
+          {
+            title: "アジャイル・スクラム・DevOps",
+            courses: [
+              "スクラムで体験！アジャイルな開発プロジェクト -経験することで理解しよう-",
+              "EXIN Agile Scrum ファンデーションコース(試験つき)",
+              "DASA DevOps ファンダメンタルコース(2日間)(試験つき)",
+              "Professional Scrum Master™ I(PSM I)",
+              "Professional Scrum Master™ – Advanced (PSM-A)",
+              "VSMワークショップ(オンライン)",
+              "Professional Scrum Product Owner™ I（PSPO）",
+            ]
+          },
+          {
+            title: "PostgreSQL・データベース",
+            courses: [
+              "PostgreSQL 導入トレーニング（初級者向け）",
+              "PostgreSQL 運用管理トレーニング（中・上級者向け）",
+              "PostgreSQL インターナル講座（上級者向け）",
+              "Pgpool-II による PostgreSQL クラスタ構築トレーニング （中・上級者向け）",
+              "Pacemaker/DRBD による PostgreSQL クラスタ構築トレーニング （中・上級者向け）",
+            ]
+          },
+        ]
+      },
+      {
+        id: 4,
+        title: "データ・AI",
+        icon: "🤖",
+        color: "#f472b6",
+        subs: [
+          {
+            title: "AI・機械学習基礎",
+            courses: [
+              "導入事例から学ぶAI入門セミナー",
+              "マウスで学ぶAI実践セミナー",
+              "JDLA G検定対策セミナー",
+              "Pythonで学ぶAI開発入門セミナー",
+              "Pythonで学ぶニューラルネットワーク基礎セミナー",
+              "Kerasで学ぶディープラーニング実践セミナー",
+              "ChatGPTで学ぶ 爆速マスター「統計学」",
+              "業務で活かせる統計分析基礎",
+            ]
+          },
+          {
+            title: "生成AI・LLM活用",
+            courses: [
+              "生成AI入門　～成功事例から学ぶ、生成AIを活用するための第一歩～",
+              "生成AI テスト設計編　～ソフトウェアテスト業務に特化した生成AIの活用方法を伝授～",
+              "生成AI 業務活用編　～未来の業務をデザインするための第一歩～",
+              "AI活用最前線：基本から学ぶ　生成AIモデルの構築と活用",
+              "AI活用最前線：実務のためのAIガバナンスとコンプライアンス",
+              "AI活用最前線：生成AIでプログラミングを超効率化しよう！",
+              "AI活用最前線：RAGとMCPで広がるSLMの世界",
+              "ソリューション営業のための生成AIセキュア活用実践",
+              "Docker AIを活用したAIエージェント開発 -ローカルLLM/MCPによるAIエージェントの構築-",
+            ]
+          },
+          {
+            title: "Microsoft AI・Copilot",
+            courses: [
+              "AI-900 Microsoft Azure AI の基礎（バウチャーなし）",
+              "AI-900 Microsoft Azure AI の基礎（バウチャー付）",
+              "AI-102 Microsoft Azure AI ソリューションの設計と実装（バウチャーなし）",
+              "AI-102 Microsoft Azure AI ソリューションの設計と実装（バウチャー付）",
+              "MS-4004 Microsoft 365 Copilot のユース ケースを使って従業員を強化する",
+              "MS-4018 Microsoft 365 Copilotでドラフト、分析、プレゼンテーションを行う",
+              "AZ-2007 GitHub Copilot を使用してアプリ開発を高速化する",
+              "AI-3016 Azureで生成 AIアプリを開発する",
+            ]
+          },
+        ]
+      },
+      {
+        id: 5,
+        title: "ビジネスアプリ・ローコード",
+        icon: "⚡",
+        color: "#facc15",
+        textColor: "#111",
+        subs: [
+          {
+            title: "Power Platform（Power Apps / Power Automate）",
+            courses: [
+              "Power Automateによる業務自動化入門〜クラウドフローとRPAで業務効率化しよう！〜",
+              "PL-7002 Power Automate を使用して自動化されたプロセスを作成および管理する",
+              "Power Appsによる業務アプリ開発入門〜はじめてのローコードアプリ開発〜",
+              "PL-7001 Power Apps を使ったキャンバス アプリの作成と管理",
+              "PL-7003 Power Apps と Dataverse を使用してモデル駆動型アプリを作成および管理する",
+              "Power BI入門〜データ分析と分析データの加工をゼロから学ぶ〜",
+              "PL-300 Microsoft Power BI データアナリスト（試験バウチャーなし）",
+              "PL-300 Microsoft Power BI データアナリスト（試験バウチャー付）",
+              "DP-900 Microsoft Azure のデータの基礎（試験バウチャーなし）",
+              "DP-900 Microsoft Azure のデータの基礎（試験バウチャー付）",
+            ]
+          },
+          {
+            title: "業務自動化・RPA・ノーコード",
+            courses: [
+              "Power Automate Desktop活用講座　ー定型業務の効率化－",
+              "n8nでスピード開発！業務自動化の新常識",
+              "誰でもできる！ノーコードで業務アプリ開発を始めよう",
+              "Excel業務を自動化！VBAで身につける「効率化スキル」実践講座",
+            ]
+          },
+          {
+            title: "IT基礎・入門",
+            courses: [
+              "ITパスポート完全攻略！3日間集中トレーニング",
+              "新入社員エンジニア研修 ～プロジェクト体験型 現場さながらの1か月～",
+              "ベンダーコミュニケーション力強化！プロジェクトマネジメント",
+              "顧客課題を解決する営業のためのネットワーク基礎力強化",
+            ]
+          },
+        ]
+      },
+      {
+        id: 6,
+        title: "PM・ビジネススキル",
+        icon: "🎯",
+        color: "#fb923c",
+        subs: [
+          {
+            title: "プロジェクトマネジメント",
+            courses: [
+              "プロジェクトマネジメント速習コース",
+              "プロジェクトの計画技法",
+              "プロジェクトの運営技法",
+              "ソフトウェア開発の実践的見積り",
+              "若手メンバーのためのPM思考とプロジェクト成功の秘訣",
+              "着実にプロジェクトを進める進捗管理実践",
+              "想定外からプロジェクトを守るリスク管理実践",
+              "トラブルプロジェクトを立て直す火消しの鉄則実践",
+              "体験型ワークで鍛える！プロジェクトの成功に向けた合意形成",
+              "【PDU対象】【現場体験型】業務改革プロジェクトを成功に導く問題解決力",
+            ]
+          },
+          {
+            title: "リーダーシップ・マネジメント",
+            courses: [
+              "できるリーダーになるためのリーダーシップ実践",
+              "メンバーのやる気をONにするモチベーション管理実践",
+              "エンゲージメントを高める1 on 1の進め方 ～心理的安全性を育むコミュニケーション～",
+              "EQ（感情知能）リーダーシップ研修　ーEQで高める信頼関係とチーム力向上ー",
+              "【診断付き】リーダーのためのアンガーマネジメント実践研修～部下への適切な伝え方～",
+              "インバスケットPlusオンライン 中級 ～中堅社員・リーダー・新任管理職向け(ロールプレイ演習付)～",
+              "インバスケットで学ぶ！　マネジメント能力向上研修",
+              "徹底攻略！インバスケット回答の書き方　実践トリプルチャレンジ（リーダークラス）",
+              "徹底攻略！インバスケット回答の書き方　実践トリプルチャレンジ（課長クラス）",
+              "徹底攻略！インバスケット回答の書き方　実践トリプルチャレンジ（部長クラス）",
+              "壁を突破するための変革マネジメント",
+              "うまくいく人の強みを学ぶ NLP速習(1日コース) ～成功・実践心理学NLPで思考と行動を変える～",
+            ]
+          },
+          {
+            title: "思考力・問題解決",
+            courses: [
+              "IT技術者のためのロジカルシンキング初級",
+              "意思決定の質とスピードが上がる論理思考実践",
+              "ロジカル・シンキング ～ビジネスケース演習で体得する思考法の基礎～",
+              "クリティカル・シンキング ～本質を理解するための論理思考法～",
+              "クリティカル・シンキング実践活用法 ～企業の潜在ニーズを読み解く～",
+              "ラテラル・シンキング ～ビジネスアイディアを創造する水平思考～",
+              "VUCA時代の問題解決 ～問題・課題と解決へのアプローチ～",
+              "VUCA時代の思考法 ～できないをできるに変える システム思考・シナリオ思考～",
+              "トリプルシンキングで鍛える課題発見・解決力向上",
+              "問題解決技法とファシリテーション能力の育成",
+              "デザイン思考入門",
+              "デザイン思考実践(1) クリエイティブな発想法とアイディアソンの実施方法",
+              "デザイン思考実践(2) エスノグラフィーの基礎とカスタマージャーニーマップ",
+              "創造的発想と論理的思考を用いた提案術",
+              "図解思考の技術 -図を駆使して明日からの仕事に活用する図解思考の技術-",
+              "デジタルビジネス時代の戦略フレームワークとビジネスモデル(1日速習コース)",
+            ]
+          },
+          {
+            title: "ファシリテーション・コミュニケーション",
+            courses: [
+              "プロジェクトで使える会議ファシリテーション実践",
+              "ワークショップで鍛える！ファシリテーション技術",
+              "最善のゴールへと導く 効果的なファシリテーション ～ファシリテーションスキルの向上～",
+              "インバスケットで学ぶ！　段取り術養成講座・実践",
+              "インバスケットで学ぶ！　モダン・タイムマネジメント",
+              "交渉の主導権を握るステークホルダーマネジメント実践",
+              "ハーバード交渉プロジェクト　交渉スキル体得コース - 基礎編",
+              "アサーティブ・コミュニケーション ～人間関係で悩まない!思いを素直に伝える会話術～",
+              "対人適応力強化コース(人とうまくコミュニケーションする)",
+              "わかりやすいビジネス文書の書き方",
+              "ストレス耐性・回復力を高める マインドフルネス研修",
+            ]
+          },
+          {
+            title: "営業・マーケティング",
+            courses: [
+              "ＩＴソリューション営業の提案力【Basic・顧客理解編】",
+              "ＩＴソリューション営業の提案力【Advance・課題抽出編】",
+              "ＩＴソリューション営業の提案力【Advance・提案作成編】",
+              "DX時代における実戦ソリューション・セリング",
+              "インサイドセールス基本研修 第2版",
+              "インサイドセールスマネージャー基本研修",
+              "基礎から学ぶカスタマーサクセス実践法 ～顧客ロイヤルティを高め強固なリレーションを作る～",
+              "成熟社会の販売戦略-顧客と企業の関係 ～選ばれる理由、顧客価値を高める方法～",
+              "【PDU対象】IT営業力の強化 基礎編 ～営業プロセスに基づく提案型営業～",
+              "【PDU対象】IT営業力の強化 実践編 ～売れるIT営業の勘所～",
+              "【PDU対象】ITソリューション提案・基礎編 ～選ばれる提案書作成のポイントとは～",
+            ]
+          },
+        ]
+      },
+    ];
 
-<script>
-const CATALOG = [
-  {
-    id: 1,
-    title: "プログラミング開発",
-    icon: "💻",
-    color: "#4f8cff",
-    subs: [
-      {
-        title: "Java",
-        courses: [
-          "Javaプログラミング入門 -Java 25対応で初心者にやさしい-",
-          "Javaプログラミング基礎 -開発現場を見据えた次のステップ-",
-          "Javaプログラミング作法 -Effective Javaで知るプログラミングの定石-",
-          "JUnitによるテスト入門",
-          "Spring Boot 4 ではじめる Webアプリケーション開発入門",
-          "Spring Boot 4 ではじめる Webサービス開発入門 REST編",
-          "Spring Securityではじめる認証・認可入門",
-          "＜速習＞Spring Boot 3 へのマイグレーション",
-          "Spring Boot 4 ではじめる Webサービス開発 GraphQL編",
-          "Spring Boot テスト 入門",
-          "Keycloakを活用した分散アプリ開発 -OAuth/OpenID Connectを用いた認証・認可の実装-",
-          "Spring Inside・DIコンテナ -ソースコードから読み解くDIコンテナ詳細-",
-          "Spring Inside・Spring Web MVC -ソースコードから読み解くSpring Web MVC詳細-",
-        ]
-      },
-      {
-        title: "Spring",
-        courses: [
-          "Javaプログラミング入門 -Java 25対応で初心者にやさしい-",
-          "Javaプログラミング基礎 -開発現場を見据えた次のステップ-",
-          "Javaプログラミング作法 -Effective Javaで知るプログラミングの定石-",
-          "JUnitによるテスト入門",
-          "Spring Boot 4 ではじめる Webアプリケーション開発入門",
-          "Spring Boot 4 ではじめる Webサービス開発入門 REST編",
-          "Spring Securityではじめる認証・認可入門",
-          "＜速習＞Spring Boot 3 へのマイグレーション",
-          "Spring Boot 4 ではじめる Webサービス開発 GraphQL編",
-          "Spring Boot テスト 入門",
-          "Keycloakを活用した分散アプリ開発 -OAuth/OpenID Connectを用いた認証・認可の実装-",
-          "Spring Inside・DIコンテナ -ソースコードから読み解くDIコンテナ詳細-",
-          "Spring Inside・Spring Web MVC -ソースコードから読み解くSpring Web MVC詳細-",
-        ]
-      },
-      {
-        title: "フロントエンド（HTML/CSS/JS/TS）",
-        courses: [
-          "HTML/CSS入門 -HTML Living Standard対応-",
-          "JavaScriptで学ぶ初めてのプログラミング",
-          "モダンJavaScript入門",
-          "JavaScript応用 -ブラウザAPIの活用-",
-          "TypeScript入門 -JavaScript応用-",
-          "jQueryによるAjaxアプリケーション開発",
-          "Node.js入門 -Expressを使ったREST Web API開発-",
-        ]
-      },
-      {
-        title: "フロントエンドフレームワーク（React / Vue / Angular / 他）",
-        courses: [
-          "【AIアシスト対応】Vue.js入門 -ver.3対応-",
-          "NuxtによるSPA開発ワークショップ -TypeScript・Vue.js応用-",
-          "【AIアシスト対応】Angular入門",
-          "【AIアシスト対応】React入門 -Hooks、ContextAPI、MUI対応-",
-          "Reduxワークショップ -React応用-",
-          "Next.js入門 -App Router、Server Actions、Prisma、TypeScript・React応用-",
-          "SvelteKit入門 -TypeScript-",
-          "JavaScriptテスト入門 -Vitest, TypeScript, React応用-",
-          "1日で学ぶReact -基礎と非同期処理、つまずきポイントの攻略-",
-        ]
-      },
-      {
-        title: "モバイルアプリ開発（Android / iOS / Flutter）",
-        courses: [
-          "【AIアシスト対応】JavaによるAndroidアプリ開発入門",
-          "【AIアシスト対応】JavaによるAndroidアプリ開発応用 -RecyclerView、ViewModel、LiveData、データバインディング、Retrofit-",
-          "【AIアシスト対応】KotlinによるAndroidアプリ開発入門 -Jetpack Compose-",
-          "【AIアシスト対応】KotlinによるAndroidアプリ開発応用 -ViewModel、Flow、RetrofitとCoroutines、Hilt-",
-          "【AIアシスト対応】SwiftによるiOSアプリ開発入門 -Swiftの基本文法とSwiftUIを利用したアプリ開発の基礎-",
-          "【AIアシスト対応】SwiftによるiOSアプリ開発応用 -Web API, DBアクセスとライブラリの活用-",
-          "Flutterアプリ開発入門 -クロスプラットフォームアプリを開発しよう-",
-          "Flutterアプリ開発応用",
-          "GeminiでAndroidアプリ高速開発体験",
-        ]
-      },
-      {
-        title: "PHP・Python・その他言語",
-        courses: [
-          "PHPで学ぶはじめてのWebアプリケーション",
-          "PHP基礎",
-          "Laravel入門",
-          "Python+Web",
-          "Python 3 エンジニア認定基礎試験対策〜目指せ! Python 認定エンジニア〜",
-          "Django基礎1〜Python でウェブサイトをさくさく作ろう〜",
-          "Django基礎2〜Django を活用してウェブサイトを作りましょう〜",
-          "AIと共に作るWebアプリケーション",
-          "ビジネス活用のためのデータベース入門 -SQLあるいは生成AIを利用してのデータ抽出と集計-",
-          "IoT・AI入門【Raspberry Piとセンサーで作ろう】",
-          "IoT・クラウド・AI実践【RaspberryPiでホームアシスタントを作る】",
-        ]
-      },
-    ]
-  },
-  {
-    id: 2,
-    title: "クラウド",
-    icon: "☁️",
-    color: "#34d399",
-    subs: [
-      {
-        title: "AWS",
-        courses: [
-          "アプリケーションエンジニアのためのAWS入門 -EC2,S3,VPC,CDK-",
-          "サーバーレスアプリケーション開発 -Lambda、API Gateway、Cognito-",
-          "Architecting on AWS（試験バウチャー無）",
-          "Architecting on AWS（試験バウチャー付）",
-          "Advanced Architecting on AWS（試験バウチャーなし）",
-          "Advanced Architecting on AWS（試験バウチャー付）",
-          "Cloud Operations on AWS (Systems Operations on AWS より改称)（試験バウチャーなし）",
-          "Cloud Operations on AWS (Systems Operations on AWS より改称)（試験バウチャー付）",
-          "AWS Security Essentials",
-          "AWS Cloud Practitioner Essentials(v3)（試験バウチャーなし）",
-          "AWS Cloud Practitioner Essentials(v3)（試験バウチャー付）",
-          "AWS Technical Essentials(v5)",
-          "Running Containers on Amazon Elastic Kubernetes Service (Amazon EKS)",
-          "DevOps Engineering on AWS（試験バウチャーなし）",
-          "DevOps Engineering on AWS（試験バウチャー付）",
-          "Generative AI Essentials on AWS（バウチャーなし）",
-          "Generative AI Essentials on AWS（バウチャー付）",
-          "Generative AI for Executives",
-          "1日で学ぶGoogle Cloud入門 -Cloud SQL+スプレッドシートで手間なくクラウドDXを実現しませんか?-",
-        ]
-      },
-      {
-        title: "Microsoft Azure",
-        courses: [
-          "AZ-900 Microsoft Azure 基礎（試験バウチャーなし）〜【CTCTオリジナル演習付き】「試験 AZ-900:Microsoft Azure Fundamentals」対応コース〜",
-          "AZ-900 Microsoft Azure 基礎（試験バウチャー付）〜【CTCTオリジナル演習付き】「試験 AZ-900:Microsoft Azure Fundamentals」対応コース〜",
-          "AZ-104 Microsoft Azure 管理者（試験バウチャーなし）",
-          "AZ-104 Microsoft Azure 管理者（試験バウチャー付）",
-          "AZ-305 Microsoft Azure インフラストラクチャの設計（試験バウチャーなし）",
-          "AZ-305 Microsoft Azure インフラストラクチャの設計（試験バウチャー付）",
-          "Azure Infrastructure 設計のポイント 【机上設計演習付き】Azure(IaaS)設計を学ぶ",
-          "Microsoft AzureによるITインフラの拡張 ～基本から学ぶサーバー構築(Windows/Linux両対応)～",
-          "Microsoft Azureによるサイト間ネットワークの構築 ～ハイブリッドクラウド構成の基礎～",
-          "速習 Hyper-V ＆ SCVMM〜Hyper-V 仮想化基盤を SCVMM で一元管理する〜",
-        ]
-      },
-      {
-        title: "Google Cloud",
-        courses: [
-          "Google Cloud Fundamentals: Core Infrastructure",
-          "Architecting with Google Cloud: Design and Process",
-        ]
-      },
-      {
-        title: "クラウド基礎・仮想化",
-        courses: [
-          "クラウド入門―導入事例で学ぶクラウド活用の第一歩―",
-          "全体像から理解するクラウドネイティブ基礎 -VM⇔コンテナ、クラウドサービスの利用、プロセスの自動化-",
-          "クラウドコンピューティングの基礎＜含EXIN認定試験＞",
-          "仮想化基礎",
-          "仮想化応用",
-          "VMware vSphere: Install, Configure, Manage [V8]",
-        ]
-      },
-      {
-        title: "コンテナ・Kubernetes",
-        courses: [
-          "Docker入門 -アプリケーションをコンテナ化しよう-",
-          "アプリケーションエンジニアのためのKubernetes基礎 -クラウドネイティブなアプリケーションの構築と運用-",
-          "レガシーアプリのコンテナ環境への移行 -コンテナ化、データの永続化、Kubernetes Operator-",
-          "＜ソフトバンク監修＞運用までを見据えたコンテナ・Kubernetes入門 -GitOps、サービスメッシュ、Kubernetesエコシステム-",
-          "Kubernetesにおける運用基本操作 -スケーリング、サービスメッシュ、自動復旧、コンテナセキュリティ-",
-          "動的なクラウドネイティブ環境のメトリクス監視入門 -Prometheusを使用した監視/Grafanaを使用した可視化-",
-          "クラウドネイティブ環境におけるログ収集・分析のためのElastic Stack入門",
-        ]
-      },
-      {
-        title: "Linux・ネットワーク・セキュリティ",
-        courses: [
-          "Linux 基本操作 -コマンド操作で学ぶ Linux オペレーティングシステム-",
-          "Linuxシステム管理 ～Linux OS運用業務のHow to～",
-          "Linuxネットワーク管理 ～Linuxのネットワーク管理のHow to～",
-          "LinuxインターネットサーバSimple構築 ～Web/Proxy/DNS/メールサーバを構築するための基礎と応用～",
-          "Linux OSセキュリティ ～Linuxシステムへの攻撃手法と、その防御方法について～",
-          "ネットワークファーストステップ ～ネットワーク入門～",
-          "ネットワーク設計ファーストステップ 〜構成図を書いて学ぶネットワーク設計の入門講座〜",
-          "無線LANシステム構築実践 ～企業向け無線LANシステムの設計・構築・運用～",
-          "無線LANトラブルシュート ～パケット解析による無線LANトラブルの調査～",
-          "実践！セキュリティ（サイバー攻撃手法とその対策） ～ハンズオンで学ぶ各種ハッキング手法～",
-          "実践！セキュリティ（セキュリティ運用/インシデント検知）",
-          "実践！セキュリティ（インシデント対応/フォレンジック調査）",
-          "システムトラブルシュート（ファーストステップ） ～問題解決のポイントとインフラ（ネットワーク/サーバ）の基礎実践～",
-          "システムトラブルシュート（ネクストステップ）〜問題解決のポイントとインフラ（サーバOS／ネットワーク／ストレージ／仮想化／ファイアウォール／ロードバランサ）の基礎実践！！〜",
-          "システム運用業務講座（ファーストステップ）〜インシデント管理を中心とした運用業務の注意すべきポイント〜",
-          "PythonによるAIテキスト解析",
-          "Pythonによるネットワーク運用自動化入門 ～Pythonスクリプトを活用したネットワーク機器の運用自動化－入門編～",
-          "Pythonによるネットワーク運用コンフィグ編 ～Pythonを使用した設定ファイル作成や出力結果の操作～",
-        ]
-      },
-      {
-        title: "DevOps・CI/CD・IaC",
-        courses: [
-          "基礎から学ぶGitコマンド -しっかり身に付くバージョン管理-",
-          "Git速習",
-          "GitLab CIパイプライン",
-          "マネージドサービスで始めるCI/CD -パイプラインによる開発・運用プロセス自動化-",
-          "Terraform、Ansible を使ったインフラストラクチャアズコード入門 -マルチクラウド実現に向けて-",
-          "Docker AIを活用したAIエージェント開発 -ローカルLLM/MCPによるAIエージェントの構築-",
-        ]
-      },
-    ]
-  },
-  {
-    id: 2,
-    title: "インフラ",
-    icon: "☁️",
-    color: "#34d399",
-    subs: [
-      {
-        title: "AWS",
-        courses: [
-          "アプリケーションエンジニアのためのAWS入門 -EC2,S3,VPC,CDK-",
-          "サーバーレスアプリケーション開発 -Lambda、API Gateway、Cognito-",
-          "Architecting on AWS（試験バウチャー無）",
-          "Architecting on AWS（試験バウチャー付）",
-          "Advanced Architecting on AWS（試験バウチャーなし）",
-          "Advanced Architecting on AWS（試験バウチャー付）",
-          "Cloud Operations on AWS (Systems Operations on AWS より改称)（試験バウチャーなし）",
-          "Cloud Operations on AWS (Systems Operations on AWS より改称)（試験バウチャー付）",
-          "AWS Security Essentials",
-          "AWS Cloud Practitioner Essentials(v3)（試験バウチャーなし）",
-          "AWS Cloud Practitioner Essentials(v3)（試験バウチャー付）",
-          "AWS Technical Essentials(v5)",
-          "Running Containers on Amazon Elastic Kubernetes Service (Amazon EKS)",
-          "DevOps Engineering on AWS（試験バウチャーなし）",
-          "DevOps Engineering on AWS（試験バウチャー付）",
-          "Generative AI Essentials on AWS（バウチャーなし）",
-          "Generative AI Essentials on AWS（バウチャー付）",
-          "Generative AI for Executives",
-          "1日で学ぶGoogle Cloud入門 -Cloud SQL+スプレッドシートで手間なくクラウドDXを実現しませんか?-",
-        ]
-      },
-      {
-        title: "Microsoft Azure",
-        courses: [
-          "AZ-900 Microsoft Azure 基礎（試験バウチャーなし）〜【CTCTオリジナル演習付き】「試験 AZ-900:Microsoft Azure Fundamentals」対応コース〜",
-          "AZ-900 Microsoft Azure 基礎（試験バウチャー付）〜【CTCTオリジナル演習付き】「試験 AZ-900:Microsoft Azure Fundamentals」対応コース〜",
-          "AZ-104 Microsoft Azure 管理者（試験バウチャーなし）",
-          "AZ-104 Microsoft Azure 管理者（試験バウチャー付）",
-          "AZ-305 Microsoft Azure インフラストラクチャの設計（試験バウチャーなし）",
-          "AZ-305 Microsoft Azure インフラストラクチャの設計（試験バウチャー付）",
-          "Azure Infrastructure 設計のポイント 【机上設計演習付き】Azure(IaaS)設計を学ぶ",
-          "Microsoft AzureによるITインフラの拡張 ～基本から学ぶサーバー構築(Windows/Linux両対応)～",
-          "Microsoft Azureによるサイト間ネットワークの構築 ～ハイブリッドクラウド構成の基礎～",
-          "速習 Hyper-V ＆ SCVMM〜Hyper-V 仮想化基盤を SCVMM で一元管理する〜",
-        ]
-      },
-      {
-        title: "Google Cloud",
-        courses: [
-          "Google Cloud Fundamentals: Core Infrastructure",
-          "Architecting with Google Cloud: Design and Process",
-        ]
-      },
-      {
-        title: "クラウド基礎・仮想化",
-        courses: [
-          "クラウド入門―導入事例で学ぶクラウド活用の第一歩―",
-          "全体像から理解するクラウドネイティブ基礎 -VM⇔コンテナ、クラウドサービスの利用、プロセスの自動化-",
-          "クラウドコンピューティングの基礎＜含EXIN認定試験＞",
-          "仮想化基礎",
-          "仮想化応用",
-          "VMware vSphere: Install, Configure, Manage [V8]",
-        ]
-      },
-      {
-        title: "コンテナ・Kubernetes",
-        courses: [
-          "Docker入門 -アプリケーションをコンテナ化しよう-",
-          "アプリケーションエンジニアのためのKubernetes基礎 -クラウドネイティブなアプリケーションの構築と運用-",
-          "レガシーアプリのコンテナ環境への移行 -コンテナ化、データの永続化、Kubernetes Operator-",
-          "＜ソフトバンク監修＞運用までを見据えたコンテナ・Kubernetes入門 -GitOps、サービスメッシュ、Kubernetesエコシステム-",
-          "Kubernetesにおける運用基本操作 -スケーリング、サービスメッシュ、自動復旧、コンテナセキュリティ-",
-          "動的なクラウドネイティブ環境のメトリクス監視入門 -Prometheusを使用した監視/Grafanaを使用した可視化-",
-          "クラウドネイティブ環境におけるログ収集・分析のためのElastic Stack入門",
-        ]
-      },
-      {
-        title: "Linux・ネットワーク・セキュリティ",
-        courses: [
-          "Linux 基本操作 -コマンド操作で学ぶ Linux オペレーティングシステム-",
-          "Linuxシステム管理 ～Linux OS運用業務のHow to～",
-          "Linuxネットワーク管理 ～Linuxのネットワーク管理のHow to～",
-          "LinuxインターネットサーバSimple構築 ～Web/Proxy/DNS/メールサーバを構築するための基礎と応用～",
-          "Linux OSセキュリティ ～Linuxシステムへの攻撃手法と、その防御方法について～",
-          "ネットワークファーストステップ ～ネットワーク入門～",
-          "ネットワーク設計ファーストステップ 〜構成図を書いて学ぶネットワーク設計の入門講座〜",
-          "無線LANシステム構築実践 ～企業向け無線LANシステムの設計・構築・運用～",
-          "無線LANトラブルシュート ～パケット解析による無線LANトラブルの調査～",
-          "実践！セキュリティ（サイバー攻撃手法とその対策） ～ハンズオンで学ぶ各種ハッキング手法～",
-          "実践！セキュリティ（セキュリティ運用/インシデント検知）",
-          "実践！セキュリティ（インシデント対応/フォレンジック調査）",
-          "システムトラブルシュート（ファーストステップ） ～問題解決のポイントとインフラ（ネットワーク/サーバ）の基礎実践～",
-          "システムトラブルシュート（ネクストステップ）〜問題解決のポイントとインフラ（サーバOS／ネットワーク／ストレージ／仮想化／ファイアウォール／ロードバランサ）の基礎実践！！〜",
-          "システム運用業務講座（ファーストステップ）〜インシデント管理を中心とした運用業務の注意すべきポイント〜",
-          "PythonによるAIテキスト解析",
-          "Pythonによるネットワーク運用自動化入門 ～Pythonスクリプトを活用したネットワーク機器の運用自動化－入門編～",
-          "Pythonによるネットワーク運用コンフィグ編 ～Pythonを使用した設定ファイル作成や出力結果の操作～",
-        ]
-      },
-      {
-        title: "DevOps・CI/CD・IaC",
-        courses: [
-          "基礎から学ぶGitコマンド -しっかり身に付くバージョン管理-",
-          "Git速習",
-          "GitLab CIパイプライン",
-          "マネージドサービスで始めるCI/CD -パイプラインによる開発・運用プロセス自動化-",
-          "Terraform、Ansible を使ったインフラストラクチャアズコード入門 -マルチクラウド実現に向けて-",
-          "Docker AIを活用したAIエージェント開発 -ローカルLLM/MCPによるAIエージェントの構築-",
-        ]
-      },
-    ]
-  },
-  {
-    id: 3,
-    title: "システム設計・品質",
-    icon: "🏗️",
-    color: "#a78bfa",
-    subs: [
-      {
-        title: "要件定義・システム設計",
-        courses: [
-          "システム開発工程基礎",
-          "システム開発を成功に導く要件定義スキル強化",
-          "業務設計・システム方式設計―現場で活かせる業務設計とシステム方式設計の基礎から応用まで―",
-          "外部設計―要件を具体化し、顧客視点で業務をシステム化するための基礎から応用まで―",
-          "内部設計―実務で役立つデータ設計・モジュール設計・処理設計の基礎から応用まで―",
-          "【PDU対象】要求定義(前編) ～ユーザ要望からシステム要件を定義する～",
-          "【PDU対象】要求定義(後編) ～システム要件を詳細化し仕様書を作成する～",
-          "【PDU対象】要求引き出しスキル実践ワークショップ ～潜在ニーズを探り、顧客の真のニーズを明確化するために～",
-          "ユーザーインタフェース設計 ~論理思考をデザインに落とし込むまで~",
-          "ユーザーインタフェース設計（講義編） ~論理思考をデザインに落とし込むまで~",
-          "ユーザーインタフェース設計（演習編） ~論理思考をデザインに落とし込むまで~",
-          "分析モデリング基礎",
-          "UMLモデリング入門－UMTP-L1認定",
-          "ベンダーコミュニケーション力強化！IT発注・要件定義の心得",
-          "ベンダーコミュニケーション力強化！システム開発入門",
-        ]
-      },
-      {
-        title: "テスト・品質管理",
-        courses: [
-          "ソフトウェアテスト、基本の「き」　～ゼロから学ぶ品質センス～",
-          "ソフトウェアテスト入門　～「テストに関する知識」、「品質に関する知識」を習得～",
-          "テスト自動化入門　～テストオートメーションの基礎～",
-          "非機能テスト入門（性能・負荷、ユーザビリティ）　～注目度急上昇のテスト領域～",
-          "テスト設計（機能テスト）　～効率的に漏れの無いテスト設計手法を習得～",
-          "テスト設計（シナリオテスト）　～業務フロー等を基に網羅的なテスト設計を習得～",
-          "仕様書インスペクション　～上流品質を高め手戻りを防ぐドキュメントレビュー技法～",
-          "DevOpsテスト入門　～継続的デリバリーを実現するテストのアプローチ～",
-          "テスト計画　～成功するためのテスト方針／工数見積りの極意を伝授～",
-          "テスト管理　～テスト実行時の管理手法／留意するポイント／各種秘訣を伝授～",
-          "不具合分析　～ソフトウェア障害報告や不具合データの分析と対策、今後の改善に活かす方法を伝授～",
-          "テスト戦略　～テスト計画に繋がる具体的な戦略立案の肝～",
-          "コンポーネントテスト【Java編】　～JUnitを使って学ぶ単体テストのツボ～",
-          "テスト観点の作り方　～ゼロから導くテストの切り口～",
-          "マスターテスト計画書の作成・活用実践　～限られた期間／予算のなかでどう品質を確保するか～",
-          "ソフトウェア品質管理基礎―テスト工程・レビュー・品質指標の基礎から応用まで―",
-          "Selenium基礎",
-          "ベンダーコミュニケーション力強化！システムテストと品質管理",
-          "顧客満足度を高める品質管理実践",
-        ]
-      },
-      {
-        title: "アーキテクチャ・マイクロサービス",
-        courses: [
-          "マイクロサービス概要",
-          "マイクロサービスアーキテクチャにおけるトランザクション入門",
-          "モジュラーモノリスから始めるマイクロサービス入門",
-          "速習！モジュラーモノリス入門",
-          "ドメイン駆動設計とAI駆動開発による新しい開発スタイル入門",
-          "AI駆動開発入門 -リスクを理解し、個人・チームの生産性を高めるAI導入ガイド-",
-        ]
-      },
-      {
-        title: "アジャイル・スクラム・DevOps",
-        courses: [
-          "スクラムで体験！アジャイルな開発プロジェクト -経験することで理解しよう-",
-          "EXIN Agile Scrum ファンデーションコース(試験つき)",
-          "DASA DevOps ファンダメンタルコース(2日間)(試験つき)",
-          "Professional Scrum Master™ I(PSM I)",
-          "Professional Scrum Master™ – Advanced (PSM-A)",
-          "VSMワークショップ(オンライン)",
-          "Professional Scrum Product Owner™ I（PSPO）",
-        ]
-      },
-      {
-        title: "PostgreSQL・データベース",
-        courses: [
-          "PostgreSQL 導入トレーニング（初級者向け）",
-          "PostgreSQL 運用管理トレーニング（中・上級者向け）",
-          "PostgreSQL インターナル講座（上級者向け）",
-          "Pgpool-II による PostgreSQL クラスタ構築トレーニング （中・上級者向け）",
-          "Pacemaker/DRBD による PostgreSQL クラスタ構築トレーニング （中・上級者向け）",
-        ]
-      },
-    ]
-  },
-  {
-    id: 4,
-    title: "データ・AI",
-    icon: "🤖",
-    color: "#f472b6",
-    subs: [
-      {
-        title: "AI・機械学習基礎",
-        courses: [
-          "導入事例から学ぶAI入門セミナー",
-          "マウスで学ぶAI実践セミナー",
-          "JDLA G検定対策セミナー",
-          "Pythonで学ぶAI開発入門セミナー",
-          "Pythonで学ぶニューラルネットワーク基礎セミナー",
-          "Kerasで学ぶディープラーニング実践セミナー",
-          "ChatGPTで学ぶ 爆速マスター「統計学」",
-          "業務で活かせる統計分析基礎",
-        ]
-      },
-      {
-        title: "生成AI・LLM活用",
-        courses: [
-          "生成AI入門　～成功事例から学ぶ、生成AIを活用するための第一歩～",
-          "生成AI テスト設計編　～ソフトウェアテスト業務に特化した生成AIの活用方法を伝授～",
-          "生成AI 業務活用編　～未来の業務をデザインするための第一歩～",
-          "AI活用最前線：基本から学ぶ　生成AIモデルの構築と活用",
-          "AI活用最前線：実務のためのAIガバナンスとコンプライアンス",
-          "AI活用最前線：生成AIでプログラミングを超効率化しよう！",
-          "AI活用最前線：RAGとMCPで広がるSLMの世界",
-          "ソリューション営業のための生成AIセキュア活用実践",
-          "Docker AIを活用したAIエージェント開発 -ローカルLLM/MCPによるAIエージェントの構築-",
-        ]
-      },
-      {
-        title: "Microsoft AI・Copilot",
-        courses: [
-          "AI-900 Microsoft Azure AI の基礎（バウチャーなし）",
-          "AI-900 Microsoft Azure AI の基礎（バウチャー付）",
-          "AI-102 Microsoft Azure AI ソリューションの設計と実装（バウチャーなし）",
-          "AI-102 Microsoft Azure AI ソリューションの設計と実装（バウチャー付）",
-          "MS-4004 Microsoft 365 Copilot のユース ケースを使って従業員を強化する",
-          "MS-4018 Microsoft 365 Copilotでドラフト、分析、プレゼンテーションを行う",
-          "AZ-2007 GitHub Copilot を使用してアプリ開発を高速化する",
-          "AI-3016 Azureで生成 AIアプリを開発する",
-        ]
-      },
-    ]
-  },
-  {
-    id: 5,
-    title: "ビジネスアプリ・ローコード",
-    icon: "⚡",
-    color: "#facc15",
-    textColor: "#111",
-    subs: [
-      {
-        title: "Power Platform（Power Apps / Power Automate）",
-        courses: [
-          "Power Automateによる業務自動化入門〜クラウドフローとRPAで業務効率化しよう！〜",
-          "PL-7002 Power Automate を使用して自動化されたプロセスを作成および管理する",
-          "Power Appsによる業務アプリ開発入門〜はじめてのローコードアプリ開発〜",
-          "PL-7001 Power Apps を使ったキャンバス アプリの作成と管理",
-          "PL-7003 Power Apps と Dataverse を使用してモデル駆動型アプリを作成および管理する",
-          "Power BI入門〜データ分析と分析データの加工をゼロから学ぶ〜",
-          "PL-300 Microsoft Power BI データアナリスト（試験バウチャーなし）",
-          "PL-300 Microsoft Power BI データアナリスト（試験バウチャー付）",
-          "DP-900 Microsoft Azure のデータの基礎（試験バウチャーなし）",
-          "DP-900 Microsoft Azure のデータの基礎（試験バウチャー付）",
-        ]
-      },
-      {
-        title: "業務自動化・RPA・ノーコード",
-        courses: [
-          "Power Automate Desktop活用講座　ー定型業務の効率化－",
-          "n8nでスピード開発！業務自動化の新常識",
-          "誰でもできる！ノーコードで業務アプリ開発を始めよう",
-          "Excel業務を自動化！VBAで身につける「効率化スキル」実践講座",
-        ]
-      },
-      {
-        title: "IT基礎・入門",
-        courses: [
-          "ITパスポート完全攻略！3日間集中トレーニング",
-          "新入社員エンジニア研修 ～プロジェクト体験型 現場さながらの1か月～",
-          "ベンダーコミュニケーション力強化！プロジェクトマネジメント",
-          "顧客課題を解決する営業のためのネットワーク基礎力強化",
-        ]
-      },
-    ]
-  },
-  {
-    id: 6,
-    title: "PM・ビジネススキル",
-    icon: "🎯",
-    color: "#fb923c",
-    subs: [
-      {
-        title: "プロジェクトマネジメント",
-        courses: [
-          "プロジェクトマネジメント速習コース",
-          "プロジェクトの計画技法",
-          "プロジェクトの運営技法",
-          "ソフトウェア開発の実践的見積り",
-          "若手メンバーのためのPM思考とプロジェクト成功の秘訣",
-          "着実にプロジェクトを進める進捗管理実践",
-          "想定外からプロジェクトを守るリスク管理実践",
-          "トラブルプロジェクトを立て直す火消しの鉄則実践",
-          "体験型ワークで鍛える！プロジェクトの成功に向けた合意形成",
-          "【PDU対象】【現場体験型】業務改革プロジェクトを成功に導く問題解決力",
-        ]
-      },
-      {
-        title: "リーダーシップ・マネジメント",
-        courses: [
-          "できるリーダーになるためのリーダーシップ実践",
-          "メンバーのやる気をONにするモチベーション管理実践",
-          "エンゲージメントを高める1 on 1の進め方 ～心理的安全性を育むコミュニケーション～",
-          "EQ（感情知能）リーダーシップ研修　ーEQで高める信頼関係とチーム力向上ー",
-          "【診断付き】リーダーのためのアンガーマネジメント実践研修～部下への適切な伝え方～",
-          "インバスケットPlusオンライン 中級 ～中堅社員・リーダー・新任管理職向け(ロールプレイ演習付)～",
-          "インバスケットで学ぶ！　マネジメント能力向上研修",
-          "徹底攻略！インバスケット回答の書き方　実践トリプルチャレンジ（リーダークラス）",
-          "徹底攻略！インバスケット回答の書き方　実践トリプルチャレンジ（課長クラス）",
-          "徹底攻略！インバスケット回答の書き方　実践トリプルチャレンジ（部長クラス）",
-          "壁を突破するための変革マネジメント",
-          "うまくいく人の強みを学ぶ NLP速習(1日コース) ～成功・実践心理学NLPで思考と行動を変える～",
-        ]
-      },
-      {
-        title: "思考力・問題解決",
-        courses: [
-          "IT技術者のためのロジカルシンキング初級",
-          "意思決定の質とスピードが上がる論理思考実践",
-          "ロジカル・シンキング ～ビジネスケース演習で体得する思考法の基礎～",
-          "クリティカル・シンキング ～本質を理解するための論理思考法～",
-          "クリティカル・シンキング実践活用法 ～企業の潜在ニーズを読み解く～",
-          "ラテラル・シンキング ～ビジネスアイディアを創造する水平思考～",
-          "VUCA時代の問題解決 ～問題・課題と解決へのアプローチ～",
-          "VUCA時代の思考法 ～できないをできるに変える システム思考・シナリオ思考～",
-          "トリプルシンキングで鍛える課題発見・解決力向上",
-          "問題解決技法とファシリテーション能力の育成",
-          "デザイン思考入門",
-          "デザイン思考実践(1) クリエイティブな発想法とアイディアソンの実施方法",
-          "デザイン思考実践(2) エスノグラフィーの基礎とカスタマージャーニーマップ",
-          "創造的発想と論理的思考を用いた提案術",
-          "図解思考の技術 -図を駆使して明日からの仕事に活用する図解思考の技術-",
-          "デジタルビジネス時代の戦略フレームワークとビジネスモデル(1日速習コース)",
-        ]
-      },
-      {
-        title: "ファシリテーション・コミュニケーション",
-        courses: [
-          "プロジェクトで使える会議ファシリテーション実践",
-          "ワークショップで鍛える！ファシリテーション技術",
-          "最善のゴールへと導く 効果的なファシリテーション ～ファシリテーションスキルの向上～",
-          "インバスケットで学ぶ！　段取り術養成講座・実践",
-          "インバスケットで学ぶ！　モダン・タイムマネジメント",
-          "交渉の主導権を握るステークホルダーマネジメント実践",
-          "ハーバード交渉プロジェクト　交渉スキル体得コース - 基礎編",
-          "アサーティブ・コミュニケーション ～人間関係で悩まない!思いを素直に伝える会話術～",
-          "対人適応力強化コース(人とうまくコミュニケーションする)",
-          "わかりやすいビジネス文書の書き方",
-          "ストレス耐性・回復力を高める マインドフルネス研修",
-        ]
-      },
-      {
-        title: "営業・マーケティング",
-        courses: [
-          "ＩＴソリューション営業の提案力【Basic・顧客理解編】",
-          "ＩＴソリューション営業の提案力【Advance・課題抽出編】",
-          "ＩＴソリューション営業の提案力【Advance・提案作成編】",
-          "DX時代における実戦ソリューション・セリング",
-          "インサイドセールス基本研修 第2版",
-          "インサイドセールスマネージャー基本研修",
-          "基礎から学ぶカスタマーサクセス実践法 ～顧客ロイヤルティを高め強固なリレーションを作る～",
-          "成熟社会の販売戦略-顧客と企業の関係 ～選ばれる理由、顧客価値を高める方法～",
-          "【PDU対象】IT営業力の強化 基礎編 ～営業プロセスに基づく提案型営業～",
-          "【PDU対象】IT営業力の強化 実践編 ～売れるIT営業の勘所～",
-          "【PDU対象】ITソリューション提案・基礎編 ～選ばれる提案書作成のポイントとは～",
-        ]
-      },
-    ]
-  },
-];
+    // Count total courses
+    let total = 0;
+    CATALOG.forEach(cat => cat.subs.forEach(s => total += s.courses.length));
+    document.getElementById('total-count').textContent = total;
 
-// Count total courses
-let total = 0;
-CATALOG.forEach(cat => cat.subs.forEach(s => total += s.courses.length));
-document.getElementById('total-count').textContent = total;
+    function escapeHtml(str) {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
 
-function escapeHtml(str) {
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
+    function highlight(text, query) {
+      if (!query) return escapeHtml(text);
+      const re = new RegExp(query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+      return escapeHtml(text).replace(re, m => `<span class="highlight">${m}</span>`);
+    }
 
-function highlight(text, query) {
-  if (!query) return escapeHtml(text);
-  const re = new RegExp(query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'gi');
-  return escapeHtml(text).replace(re, m => `<span class="highlight">${m}</span>`);
-}
+    function renderCatalog(filterCat = 'all', query = '') {
+      const container = document.getElementById('catalog');
+      container.innerHTML = '';
+      let anyVisible = false;
 
-function renderCatalog(filterCat = 'all', query = '') {
-  const container = document.getElementById('catalog');
-  container.innerHTML = '';
-  let anyVisible = false;
+      CATALOG.forEach(cat => {
+        if (filterCat !== 'all' && String(cat.id) !== filterCat) return;
 
-  CATALOG.forEach(cat => {
-    if (filterCat !== 'all' && String(cat.id) !== filterCat) return;
+        let catHtml = '';
+        let catCount = 0;
 
-    let catHtml = '';
-    let catCount = 0;
+        cat.subs.forEach(sub => {
+          const filtered = query
+            ? sub.courses.filter(c => c.toLowerCase().includes(query.toLowerCase()))
+            : sub.courses;
+          if (filtered.length === 0) return;
+          catCount += filtered.length;
 
-    cat.subs.forEach(sub => {
-      const filtered = query
-        ? sub.courses.filter(c => c.toLowerCase().includes(query.toLowerCase()))
-        : sub.courses;
-      if (filtered.length === 0) return;
-      catCount += filtered.length;
-
-      const courseItems = filtered.map(c =>
-        `<div class="course-item">
+          const courseItems = filtered.map(c =>
+            `<div class="course-item">
           <span class="course-dot"></span>
           <span class="course-name">${highlight(c, query)}</span>
         </div>`
-      ).join('');
+          ).join('');
 
-      catHtml += `
+          catHtml += `
         <div class="sub-card">
           <div class="sub-card-header" onclick="this.closest('.sub-card').classList.toggle('open')">
             <span class="sub-badge" style="background:${cat.color}"></span>
@@ -915,12 +1122,12 @@ function renderCatalog(filterCat = 'all', query = '') {
           </div>
           <div class="course-list">${courseItems}</div>
         </div>`;
-    });
+        });
 
-    if (catCount === 0) return;
-    anyVisible = true;
+        if (catCount === 0) return;
+        anyVisible = true;
 
-    container.innerHTML += `
+        container.innerHTML += `
       <section class="category-section" data-cat="${cat.id}">
         <div class="cat-header">
           <div class="cat-icon" style="background:${cat.color}22; color:${cat.color}">${cat.icon}</div>
@@ -929,45 +1136,46 @@ function renderCatalog(filterCat = 'all', query = '') {
         </div>
         <div class="sub-grid">${catHtml}</div>
       </section>`;
-  });
+      });
 
-  // If searching, auto-expand all
-  if (query) {
-    document.querySelectorAll('.sub-card').forEach(c => c.classList.add('open'));
-  }
+      // If searching, auto-expand all
+      if (query) {
+        document.querySelectorAll('.sub-card').forEach(c => c.classList.add('open'));
+      }
 
-  document.getElementById('no-results').style.display = anyVisible ? 'none' : 'block';
-}
-
-// Tabs
-document.getElementById('cat-tabs').addEventListener('click', e => {
-  const tab = e.target.closest('.cat-tab');
-  if (!tab) return;
-  document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
-  tab.classList.add('active');
-  renderCatalog(tab.dataset.cat, document.getElementById('search-input').value.trim());
-});
-
-// Search
-let searchTimer;
-document.getElementById('search-input').addEventListener('input', e => {
-  clearTimeout(searchTimer);
-  searchTimer = setTimeout(() => {
-    const q = e.target.value.trim();
-    // reset to all tab when searching
-    if (q) {
-      document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
-      document.querySelector('.cat-tab[data-cat="all"]').classList.add('active');
-      renderCatalog('all', q);
-    } else {
-      const activeCat = document.querySelector('.cat-tab.active')?.dataset.cat || 'all';
-      renderCatalog(activeCat, '');
+      document.getElementById('no-results').style.display = anyVisible ? 'none' : 'block';
     }
-  }, 200);
-});
 
-// Initial render
-renderCatalog();
-</script>
+    // Tabs
+    document.getElementById('cat-tabs').addEventListener('click', e => {
+      const tab = e.target.closest('.cat-tab');
+      if (!tab) return;
+      document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      renderCatalog(tab.dataset.cat, document.getElementById('search-input').value.trim());
+    });
+
+    // Search
+    let searchTimer;
+    document.getElementById('search-input').addEventListener('input', e => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => {
+        const q = e.target.value.trim();
+        // reset to all tab when searching
+        if (q) {
+          document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+          document.querySelector('.cat-tab[data-cat="all"]').classList.add('active');
+          renderCatalog('all', q);
+        } else {
+          const activeCat = document.querySelector('.cat-tab.active')?.dataset.cat || 'all';
+          renderCatalog(activeCat, '');
+        }
+      }, 200);
+    });
+
+    // Initial render
+    renderCatalog();
+  </script>
 </body>
+
 </html>
