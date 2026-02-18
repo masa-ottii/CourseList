@@ -375,7 +375,118 @@ const CATALOG = [
   },
   {
     id: 2,
-    title: "クラウド・インフラ",
+    title: "クラウド",
+    icon: "☁️",
+    color: "#34d399",
+    subs: [
+      {
+        title: "AWS",
+        courses: [
+          "アプリケーションエンジニアのためのAWS入門 -EC2,S3,VPC,CDK-",
+          "サーバーレスアプリケーション開発 -Lambda、API Gateway、Cognito-",
+          "Architecting on AWS（試験バウチャー無）",
+          "Architecting on AWS（試験バウチャー付）",
+          "Advanced Architecting on AWS（試験バウチャーなし）",
+          "Advanced Architecting on AWS（試験バウチャー付）",
+          "Cloud Operations on AWS (Systems Operations on AWS より改称)（試験バウチャーなし）",
+          "Cloud Operations on AWS (Systems Operations on AWS より改称)（試験バウチャー付）",
+          "AWS Security Essentials",
+          "AWS Cloud Practitioner Essentials(v3)（試験バウチャーなし）",
+          "AWS Cloud Practitioner Essentials(v3)（試験バウチャー付）",
+          "AWS Technical Essentials(v5)",
+          "Running Containers on Amazon Elastic Kubernetes Service (Amazon EKS)",
+          "DevOps Engineering on AWS（試験バウチャーなし）",
+          "DevOps Engineering on AWS（試験バウチャー付）",
+          "Generative AI Essentials on AWS（バウチャーなし）",
+          "Generative AI Essentials on AWS（バウチャー付）",
+          "Generative AI for Executives",
+          "1日で学ぶGoogle Cloud入門 -Cloud SQL+スプレッドシートで手間なくクラウドDXを実現しませんか?-",
+        ]
+      },
+      {
+        title: "Microsoft Azure",
+        courses: [
+          "AZ-900 Microsoft Azure 基礎（試験バウチャーなし）〜【CTCTオリジナル演習付き】「試験 AZ-900:Microsoft Azure Fundamentals」対応コース〜",
+          "AZ-900 Microsoft Azure 基礎（試験バウチャー付）〜【CTCTオリジナル演習付き】「試験 AZ-900:Microsoft Azure Fundamentals」対応コース〜",
+          "AZ-104 Microsoft Azure 管理者（試験バウチャーなし）",
+          "AZ-104 Microsoft Azure 管理者（試験バウチャー付）",
+          "AZ-305 Microsoft Azure インフラストラクチャの設計（試験バウチャーなし）",
+          "AZ-305 Microsoft Azure インフラストラクチャの設計（試験バウチャー付）",
+          "Azure Infrastructure 設計のポイント 【机上設計演習付き】Azure(IaaS)設計を学ぶ",
+          "Microsoft AzureによるITインフラの拡張 ～基本から学ぶサーバー構築(Windows/Linux両対応)～",
+          "Microsoft Azureによるサイト間ネットワークの構築 ～ハイブリッドクラウド構成の基礎～",
+          "速習 Hyper-V ＆ SCVMM〜Hyper-V 仮想化基盤を SCVMM で一元管理する〜",
+        ]
+      },
+      {
+        title: "Google Cloud",
+        courses: [
+          "Google Cloud Fundamentals: Core Infrastructure",
+          "Architecting with Google Cloud: Design and Process",
+        ]
+      },
+      {
+        title: "クラウド基礎・仮想化",
+        courses: [
+          "クラウド入門―導入事例で学ぶクラウド活用の第一歩―",
+          "全体像から理解するクラウドネイティブ基礎 -VM⇔コンテナ、クラウドサービスの利用、プロセスの自動化-",
+          "クラウドコンピューティングの基礎＜含EXIN認定試験＞",
+          "仮想化基礎",
+          "仮想化応用",
+          "VMware vSphere: Install, Configure, Manage [V8]",
+        ]
+      },
+      {
+        title: "コンテナ・Kubernetes",
+        courses: [
+          "Docker入門 -アプリケーションをコンテナ化しよう-",
+          "アプリケーションエンジニアのためのKubernetes基礎 -クラウドネイティブなアプリケーションの構築と運用-",
+          "レガシーアプリのコンテナ環境への移行 -コンテナ化、データの永続化、Kubernetes Operator-",
+          "＜ソフトバンク監修＞運用までを見据えたコンテナ・Kubernetes入門 -GitOps、サービスメッシュ、Kubernetesエコシステム-",
+          "Kubernetesにおける運用基本操作 -スケーリング、サービスメッシュ、自動復旧、コンテナセキュリティ-",
+          "動的なクラウドネイティブ環境のメトリクス監視入門 -Prometheusを使用した監視/Grafanaを使用した可視化-",
+          "クラウドネイティブ環境におけるログ収集・分析のためのElastic Stack入門",
+        ]
+      },
+      {
+        title: "Linux・ネットワーク・セキュリティ",
+        courses: [
+          "Linux 基本操作 -コマンド操作で学ぶ Linux オペレーティングシステム-",
+          "Linuxシステム管理 ～Linux OS運用業務のHow to～",
+          "Linuxネットワーク管理 ～Linuxのネットワーク管理のHow to～",
+          "LinuxインターネットサーバSimple構築 ～Web/Proxy/DNS/メールサーバを構築するための基礎と応用～",
+          "Linux OSセキュリティ ～Linuxシステムへの攻撃手法と、その防御方法について～",
+          "ネットワークファーストステップ ～ネットワーク入門～",
+          "ネットワーク設計ファーストステップ 〜構成図を書いて学ぶネットワーク設計の入門講座〜",
+          "無線LANシステム構築実践 ～企業向け無線LANシステムの設計・構築・運用～",
+          "無線LANトラブルシュート ～パケット解析による無線LANトラブルの調査～",
+          "実践！セキュリティ（サイバー攻撃手法とその対策） ～ハンズオンで学ぶ各種ハッキング手法～",
+          "実践！セキュリティ（セキュリティ運用/インシデント検知）",
+          "実践！セキュリティ（インシデント対応/フォレンジック調査）",
+          "システムトラブルシュート（ファーストステップ） ～問題解決のポイントとインフラ（ネットワーク/サーバ）の基礎実践～",
+          "システムトラブルシュート（ネクストステップ）〜問題解決のポイントとインフラ（サーバOS／ネットワーク／ストレージ／仮想化／ファイアウォール／ロードバランサ）の基礎実践！！〜",
+          "システム運用業務講座（ファーストステップ）〜インシデント管理を中心とした運用業務の注意すべきポイント〜",
+          "PythonによるAIテキスト解析",
+          "Pythonによるネットワーク運用自動化入門 ～Pythonスクリプトを活用したネットワーク機器の運用自動化－入門編～",
+          "Pythonによるネットワーク運用コンフィグ編 ～Pythonを使用した設定ファイル作成や出力結果の操作～",
+        ]
+      },
+      {
+        title: "DevOps・CI/CD・IaC",
+        courses: [
+          "基礎から学ぶGitコマンド -しっかり身に付くバージョン管理-",
+          "Git速習",
+          "GitLab CIパイプライン",
+          "マネージドサービスで始めるCI/CD -パイプラインによる開発・運用プロセス自動化-",
+          "Terraform、Ansible を使ったインフラストラクチャアズコード入門 -マルチクラウド実現に向けて-",
+          "Docker AIを活用したAIエージェント開発 -ローカルLLM/MCPによるAIエージェントの構築-",
+        ]
+      },
+    ]
+  },
+  {
+    id: 2,
+    title: "インフラ",
     icon: "☁️",
     color: "#34d399",
     subs: [
